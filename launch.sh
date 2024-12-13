@@ -2,16 +2,15 @@
 
 RPC_USER="${RPC_USER:-user}"
 RPC_PASS="${RPC_PASS:-pass}"
-RPC_PORT="${RPC_PORT:-9130}"
 RPC_HOST="${RPC_HOST:-localhost}"
+RPC_PORT="${RPC_PORT:-9402}"
+MQ_PORT="${MQ_URL:-38341}"
 
+CFG_FILE=/blockbook/config/blockchaincfg.json
 
-CFG_FILE=$HOME/blockchain_cfg.json
+sed -i 's/\"rpc_user\":.*/\"rpc_user\": \"'${RPC_USER}'\",/g' $CFG_FILE
+sed -i 's/\"rpc_pass\":.*/\"rpc_pass\": \"'${RPC_PASS}'\",/g' $CFG_FILE
+sed -i 's/\"rpc_url\":.*/\"rpc_url\": \"http:\/\/'${RPC_HOST}':'${RPC_PORT}'\",/g' $CFG_FILE
+sed -i 's/\"message_queue_binding\":.*/\"message_queue_binding\": \"tcp:\/\/'${RPC_HOST}':'${MQ_PORT}'\",/g' $CFG_FILE
 
-sed -i 's/@RPC_USER@/'"$RPC_USER"'/' $CFG_FILE 
-sed -i 's/@RPC_PASS@/'"$RPC_PASS"'/' $CFG_FILE 
-sed -i 's/@RPC_HOST@/'"$RPC_HOST"'/g' $CFG_FILE 
-sed -i 's/@RPC_PORT@/'"$RPC_PORT"'/' $CFG_FILE 
-
-
-cd $GOPATH/src/blockbook && exec ./blockbook -sync -blockchaincfg=$HOME/blockchain_cfg.json -internal=:9030 -public=:9130 -certfile=server/testcert -logtostderr
+exec ./blockbook -blockchaincfg=/blockbook/config/blockchaincfg.json -datadir=/blockbook/db -workers=${WORKERS:-1} -public=:${BLOCKBOOK_PORT:-9141} -logtostderr "$@"
