@@ -1,13 +1,16 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 MAINTAINER obi.nwamarah@gmail.com
 
 ENV TAG=master
 
 # Install dependencies 
-RUN dnf -y install which libstdc++-devel zeromq zeromq-devel gcc-c++ findutils libstdc++-static golang \
-                   snappy-devel zlib-devel bzip2-devel lz4-libs lz4-devel git && \
-	     	   dnf clean all
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y build-essential git wget pkg-config lxc-dev libzmq3-dev \
+                       libgflags-dev libsnappy-dev zlib1g-dev libbz2-dev \
+                       libzstd-dev liblz4-dev graphviz && \
+    apt-get clean
 
 RUN useradd -ms /bin/bash blockbook 
 
