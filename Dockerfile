@@ -33,11 +33,7 @@ RUN useradd -ms /bin/bash blockbook && mkdir -p $HOME/rocksdb/include && mkdir -
 USER blockbook
 
 # Install Go
-RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCHITECTURE=amd64; \
-    elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then ARCHITECTURE=arm64; \
-    elif [ "$TARGETPLATFORM" = "linux/aarch64" ]; then ARCHITECTURE=arm64; \
-    else ARCHITECTURE=amd64; fi && \
-    cd /tmp && wget https://dl.google.com/go/go1.22.2.linux-amd64.tar.gz && \
+RUN cd /tmp && wget https://dl.google.com/go/go1.22.2.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz && rm -f go1.22.2.linux-amd64.tar.gz
 
 RUN ln -s /usr/local/go/bin/go /usr/bin/go && \
