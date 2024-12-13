@@ -1,7 +1,7 @@
 {
-    "coin_name": "DogeCash",
+    "coin_name": "DOGEC",
     "coin_shortcut": "DOGEC",
-    "coin_label": "Bitcoin",
+    "coin_label": "DogeCash",
     "rpc_url": "http://127.0.0.1:8034",
     "rpc_user": "rpc",
     "rpc_pass": "pivxrpc",
