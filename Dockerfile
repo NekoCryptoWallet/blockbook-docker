@@ -44,6 +44,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy RocksDB shared libraries from the build stage
+COPY --from=build /usr/local/lib/librocksdb.so* /usr/local/lib/
+RUN ldconfig
+
 # Set up Blockbook runtime
 RUN mkdir -p /blockbook/config
 COPY --from=build /home/blockbook/blockbook /blockbook/
