@@ -12,7 +12,8 @@ RUN go build -tags rocksdb_6_16 -ldflags="-X github.com/trezor/blockbook/common.
     && strip blockbook \
     && ./contrib/scripts/build-blockchaincfg.sh monacoin
 
-FROM debian:stretch-slim
+FROM debian:buster-slim
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN mkdir -p /blockbook/config \
     && apt-get update \
