@@ -37,32 +37,32 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCHITECTURE=amd64; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then ARCHITECTURE=arm64; \
     elif [ "$TARGETPLATFORM" = "linux/aarch64" ]; then ARCHITECTURE=arm64; \
     else ARCHITECTURE=amd64; fi && \
-    cd /tmp && wget https://dl.google.com/go/$GOLANG_VERSION.linux-$ARCHITECTURE.tar.gz && \
-    tar -C /usr/local -xzf $GOLANG_VERSION.linux-$ARCHITECTURE.tar.gz && rm -f $GOLANG_VERSION.linux-$ARCHITECTURE.tar.gz
+    cd /tmp && wget https://dl.google.com/go/go1.22.2.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz && rm -f go1.22.2.linux-amd64.tar.gz
 
 RUN ln -s /usr/local/go/bin/go /usr/bin/go && \
     echo -n "GO version: " && go version
 
 # Install RocksDB
-RUN cd /tmp && git clone -b $ROCKSDB_VERSION --depth 1 https://github.com/facebook/rocksdb.git && \
+RUN cd /tmp && git clone -b v7.7.2 --depth 1 https://github.com/facebook/rocksdb.git && \
     cd rocksdb && CFLAGS=-fPIC CXXFLAGS=-fPIC PORTABLE=$PORTABLE_ROCKSDB make -j4 release && \
-    cp librock* $HOME/rocksdb && cp -r include $HOME/rocksdb && \
+    cp librock* /home/blockbook/rocksdb && cp -r include /home/blockbook/rocksdb && \
     rm -rf /tmp/rocksdb && go get github.com/tecbot/gorocksdb
 
 # Install Blockbook dependencies and build
-RUN cd $GOPATH/src && git clone https://github.com/trezor/blockbook.git && \
-    cd blockbook && git checkout $TAG && go mod download && \
+RUN cd /home/blockbook/go/src && git clone https://github.com/trezor/blockbook.git && \
+    cd blockbook && git checkout master && go mod download && \
     BUILDTIME=$(date --iso-8601=seconds); \
     GITCOMMIT=$(git describe --always --dirty); \
     LDFLAGS="-X blockbook/common.version=${TAG} -X blockbook/common.gitcommit=${GITCOMMIT} -X blockbook/common.buildtime=${BUILDTIME}" && \
-    go build -ldflags="-s -w ${LDFLAGS}" && rm -rf $GOPATH/pkg/mod
+    go build -ldflags="-s -w ${LDFLAGS}" && rm -rf /home/blockbook/go/pkg/mod
 
 # Copy scripts and configs
-COPY launch.sh $HOME
-COPY blockchain_cfg.json $HOME
+COPY launch.sh /home/blockbook
+COPY blockchain_cfg.json /home/blockbook
 
 # Expose necessary ports
 EXPOSE 9030 9130
 
 # Entry point
-ENTRYPOINT $HOME/launch.sh
+ENTRYPOINT /home/blockbook/launch.sh
