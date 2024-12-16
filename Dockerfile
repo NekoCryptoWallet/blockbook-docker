@@ -6,7 +6,7 @@ RUN apt install -y build-essential software-properties-common lz4 zstd libsnappy
 WORKDIR go
 ENV GOPATH=/explorer/go
 WORKDIR src
-RUN git clone https://github.com/DeanSparrow/PIVX-BlockExplorer.git
+RUN git clone https://github.com/PIVX-Labs/PIVX-BlockExplorer.git
 WORKDIR PIVX-BlockExplorer
 COPY blockchainconfig.json .
 RUN go mod init || echo
