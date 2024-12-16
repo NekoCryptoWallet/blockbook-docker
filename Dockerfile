@@ -1,20 +1,22 @@
-FROM ubuntu:latest
+FROM gostartups/golang-rocksdb-zeromq:1511
 
-WORKDIR /explorer
-RUN apt update
-RUN apt install -y build-essential software-properties-common lz4 zstd libsnappy-dev libbz2-dev libzmq3-dev golang librocksdb-dev liblz4-dev libjemalloc-dev libgflags-dev libsnappy-dev zlib1g-dev libbz2-dev libzstd-dev git
-WORKDIR go
-ENV GOPATH=/explorer/go
-WORKDIR src
-RUN git clone https://github.com/DeanSparrow/PIVX-BlockExplorer.git
-WORKDIR PIVX-BlockExplorer
-COPY blockchain_cfg.json .
-RUN go mod init || echo
-RUN go mod tidy || echo
-RUN go build || echo
-RUN ./build.sh
+WORKDIR /home
+# Build blockbook
+RUN apt install -y libzstd-dev
+RUN git clone https://github.com/trezor/blockbook
+WORKDIR /home/blockbook
+
+RUN git checkout v0.4.0
+# RUN go mod download
+RUN go build 
  
-ENTRYPOINT ["bin/blockbook"]
-CMD ["-sync", "-resyncindexperiod=60017",  "-resyncmempoolperiod=60017",  "-blockchaincfg=/explorer/go/src/PIVX-BlockExplorer/blockchain_cfg.json", "-internal=:9030", "-public=:9130", "-logtostderr"]
+# Copy startup scripts
+COPY launch.sh /home/blockbook/
+
+RUN chmod +x /home/blockbook/launch.sh
+
+COPY blockchain_cfg.json /blockbook/config/
 
 EXPOSE 9030 9130
+
+ENTRYPOINT $HOME/launch.sh
