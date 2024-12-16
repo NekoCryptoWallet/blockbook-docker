@@ -8,17 +8,13 @@ ENV GOPATH=/explorer/go
 WORKDIR src
 RUN git clone https://github.com/DeanSparrow/PIVX-BlockExplorer.git
 WORKDIR PIVX-BlockExplorer
-COPY docker/blockchainconfig.json .
+COPY blockchain_cfg.json .
 RUN go mod init || echo
 RUN go mod tidy || echo
 RUN go build || echo
 RUN ./build.sh
  
-# Copy startup scripts
-COPY launch.sh /explorer
-
-COPY blockchain_cfg.json /explorer/go/src/PIVX-BlockExplorer/
+ENTRYPOINT ["bin/blockbook"]
+CMD ["-sync", "-resyncindexperiod=60017",  "-resyncmempoolperiod=60017",  "-blockchaincfg=/explorer/go/src/PIVX-BlockExplorer/blockchain_cfg.json", "-internal=:9030", "-public=:9130", "-logtostderr"]
 
 EXPOSE 9030 9130
-
-ENTRYPOINT /explorer/launch.sh
