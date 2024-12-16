@@ -15,4 +15,4 @@ RUN go build || echo
 RUN ./build.sh
 ENTRYPOINT ["bin/blockbook"]
 CMD ["-sync", "-resyncindexperiod=60017",  "-resyncmempoolperiod=60017",  "-blockchaincfg=/explorer/go/src/PIVX-BlockExplorer/blockchainconfig.json", "-internal=:9049", "-public=:9149", "-logtostderr"]
-EXPOSE 443
+EXPOSE 9149 9049
