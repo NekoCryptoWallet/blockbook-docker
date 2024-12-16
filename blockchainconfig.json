@@ -1,0 +1,14 @@
+{
+    "coin_name": "PIVX",
+    "coin_shortcut": "PIVX",
+    "coin_label": "pivx",
+    "rpc_url": "http://127.0.0.1:8049",
+    "rpc_user": "rpc",
+    "rpc_pass": "pivxrpc",
+    "rpc_timeout": 25,
+    "parse": true,
+    "message_queue_binding": "tcp://127.0.0.1:38349",
+    "subversion": "",
+    "address_format": "",
+    "block_addresses_to_keep": 300
+}
