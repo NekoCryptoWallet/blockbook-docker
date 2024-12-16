@@ -15,7 +15,7 @@ COPY launch.sh /home/blockbook/
 
 RUN chmod +x /home/blockbook/launch.sh
 
-COPY blockchain_cfg.json /blockbook/config/
+COPY blockchain_cfg.json /blockbook/config/blockchaincfg.json
 
 EXPOSE 9030 9130
 
