@@ -1,4 +1,4 @@
-name: Build and release container image DOGEC
+name: Build and release container image PIVX
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -9,7 +9,7 @@ name: Build and release container image DOGEC
 on:
   push:
     branches:
-      - "dogecash"
+      - "pivx"
     paths-ignore:
       - "*.md"
       - LICENSE
@@ -67,8 +67,8 @@ jobs:
           context: .
           file: Dockerfile
           tags: |
-            ghcr.io/nekocryptowallet/blockbook-docker-dogec:latest
-            ghcr.io/nekocryptowallet/blockbook-docker-dogec:${{ env.tag }}
+            ghcr.io/nekocryptowallet/blockbook-docker-pivx:latest
+            ghcr.io/nekocryptowallet/blockbook-docker-pivx:${{ env.tag }}
             ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: release=1
