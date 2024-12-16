@@ -19,4 +19,4 @@ COPY blockchain_cfg.json /blockbook/config/
 
 EXPOSE 9030 9130
 
-ENTRYPOINT $HOME/launch.sh
+ENTRYPOINT /home/blockbook/launch.sh
